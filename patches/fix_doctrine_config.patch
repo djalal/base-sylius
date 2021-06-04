@@ -1,0 +1,98 @@
+From eb78c06b83ca255b5e98f2879742944a9c36af01 Mon Sep 17 00:00:00 2001
+From: Kamil Kokot <kamil@kokot.me>
+Date: Tue, 1 Jun 2021 22:38:26 +0100
+Subject: [PATCH] Fix Doctrine config
+
+It breaks the application when DoctrineBundle v2.4.0+ is used.
+---
+ config/packages/doctrine.yaml             | 18 ++++++++++--------
+ config/packages/prod/doctrine.yaml        | 20 +++++++++++---------
+ config/packages/test_cached/doctrine.yaml | 20 +++++++++++---------
+ 3 files changed, 32 insertions(+), 26 deletions(-)
+
+diff --git a/config/packages/doctrine.yaml b/config/packages/doctrine.yaml
+index 312dc773..91fdbcf2 100644
+--- a/config/packages/doctrine.yaml
++++ b/config/packages/doctrine.yaml
+@@ -14,11 +14,13 @@ doctrine:
+         url: '%env(resolve:DATABASE_URL)%'
+     orm:
+         auto_generate_proxy_classes: '%kernel.debug%'
+-        auto_mapping: true
+-        mappings:
+-            App:
+-                is_bundle: false
+-                type: annotation
+-                dir: '%kernel.project_dir%/src/Entity'
+-                prefix: 'App\Entity'
+-                alias: App
++        entity_managers:
++            default:
++                auto_mapping: true
++                mappings:
++                    App:
++                        is_bundle: false
++                        type: annotation
++                        dir: '%kernel.project_dir%/src/Entity'
++                        prefix: 'App\Entity'
++                        alias: App
+diff --git a/config/packages/prod/doctrine.yaml b/config/packages/prod/doctrine.yaml
+index 2f16f0fd..ac3ee6f7 100644
+--- a/config/packages/prod/doctrine.yaml
++++ b/config/packages/prod/doctrine.yaml
+@@ -1,14 +1,16 @@
+ doctrine:
+     orm:
+-        metadata_cache_driver:
+-            type: service
+-            id: doctrine.system_cache_provider
+-        query_cache_driver:
+-            type: service
+-            id: doctrine.system_cache_provider
+-        result_cache_driver:
+-            type: service
+-            id: doctrine.result_cache_provider
++        entity_managers:
++            default:
++                metadata_cache_driver:
++                    type: service
++                    id: doctrine.system_cache_provider
++                query_cache_driver:
++                    type: service
++                    id: doctrine.system_cache_provider
++                result_cache_driver:
++                    type: service
++                    id: doctrine.result_cache_provider
+
+ services:
+     doctrine.result_cache_provider:
+diff --git a/config/packages/test_cached/doctrine.yaml b/config/packages/test_cached/doctrine.yaml
+index 2f16f0fd..ac3ee6f7 100644
+--- a/config/packages/test_cached/doctrine.yaml
++++ b/config/packages/test_cached/doctrine.yaml
+@@ -1,14 +1,16 @@
+ doctrine:
+     orm:
+-        metadata_cache_driver:
+-            type: service
+-            id: doctrine.system_cache_provider
+-        query_cache_driver:
+-            type: service
+-            id: doctrine.system_cache_provider
+-        result_cache_driver:
+-            type: service
+-            id: doctrine.result_cache_provider
++        entity_managers:
++            default:
++                metadata_cache_driver:
++                    type: service
++                    id: doctrine.system_cache_provider
++                query_cache_driver:
++                    type: service
++                    id: doctrine.system_cache_provider
++                result_cache_driver:
++                    type: service
++                    id: doctrine.result_cache_provider
+
+ services:
+     doctrine.result_cache_provider:
