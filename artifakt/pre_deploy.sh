@@ -12,7 +12,7 @@ fi
 
 # Installing project/DB (@see https://docs.sylius.com/en/1.9/cookbook/configuration/installation-commands.html)
 if [[ "$IS_INSTALLED" == "false" ]]; then
-    php bin/console sylius:install -e $ARTIFAKT_ENVIRONMENT_CRITICALITY -n
+    php bin/console sylius:install -e $ARTIFAKT_ENVIRONMENT_CRITICALITY -n --ansi
 fi
 
 # Installing assets
