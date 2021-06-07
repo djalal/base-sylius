@@ -16,5 +16,5 @@ if [[ "$IS_INSTALLED" == "false" ]]; then
 fi
 
 # Installing assets
-yarn install
-yarn build
+#yarn install
+#yarn build
