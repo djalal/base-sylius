@@ -13,13 +13,20 @@ fi
 # Check requirements before everything else
 php bin/console sylius:install:check-requirements
 
-# Installing project/DB (@see https://docs.sylius.com/en/1.9/cookbook/configuration/installation-commands.html)
 if [[ "$IS_INSTALLED" == "false" ]]; then
+    # Installing project/DB (@see https://docs.sylius.com/en/1.9/cookbook/configuration/installation-commands.html)
     yes Y | php bin/console sylius:install:database -e $ARTIFAKT_ENVIRONMENT_CRITICALITY --ansi
     yes Y | php bin/console sylius:install:sample-data -e $ARTIFAKT_ENVIRONMENT_CRITICALITY --ansi
     php bin/console sylius:install:setup -e $ARTIFAKT_ENVIRONMENT_CRITICALITY --ansi -n
     php bin/console sylius:install:assets -e $ARTIFAKT_ENVIRONMENT_CRITICALITY --ansi -n
+else
+    # Build already installed project
+    php bin/console sylius:fixtures:load -e $ARTIFAKT_ENVIRONMENT_CRITICALITY --ansi -n
+    php bin/console sylius:install:assets -e $ARTIFAKT_ENVIRONMENT_CRITICALITY --ansi -n
 fi
+
+# Cache clear
+php bin/console cache:clear
 
 # Installing assets
 yarn install
