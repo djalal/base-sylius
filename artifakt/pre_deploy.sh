@@ -19,7 +19,7 @@ php bin/console sylius:install:check-requirements
 if [[ $ARTIFAKT_IS_MAIN_INSTANCE -eq 1 ]]; then
     if [[ "$IS_INSTALLED" == "false" ]]; then
         # Install fresh DB and project (@see https://docs.sylius.com/en/1.9/cookbook/configuration/installation-commands.html)
-        yes | php bin/console sylius:install:database -e $ARTIFAKT_ENVIRONMENT_CRITICALITY --ansi
+        printf "y\ny\n" | php bin/console sylius:install:database -e $ARTIFAKT_ENVIRONMENT_CRITICALITY --ansi
         php bin/console sylius:install:setup -e $ARTIFAKT_ENVIRONMENT_CRITICALITY --ansi -n
     else
         # Load fixtures
@@ -30,9 +30,9 @@ if [[ $ARTIFAKT_IS_MAIN_INSTANCE -eq 1 ]]; then
 else
     # Wait until main instance is ready before carry on
     until [[ -f "/mnt/shared/main_instance_ready.flag" ]];
-    do sleep 10 && echo "Database is not up to date, waiting...";
+    do sleep 10 && echo "Waiting main instance...";
     done;
-    echo "Database is up to date.";
+    echo "Main instance ready";
     sudo rm /mnt/shared/main_instance_ready.flag
 fi
 
