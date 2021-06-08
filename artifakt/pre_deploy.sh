@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Remove 'main instance ready' flag
-rm /mnt/shared/main_instance_ready.flag
+sudo rm /mnt/shared/main_instance_ready.flag
 
 # @see https://github.com/Sylius/Sylius/issues/12685
 git apply patches/fix_doctrine_config.patch
@@ -28,15 +28,14 @@ if [[ $ARTIFAKT_IS_MAIN_INSTANCE -eq 1 ]]; then
         php bin/console sylius:fixtures:load -e $ARTIFAKT_ENVIRONMENT_CRITICALITY --ansi -n
     fi
 
-    touch /mnt/shared/main_instance_ready.flag
+    sudo touch /mnt/shared/main_instance_ready.flag
 else
     # Wait until main instance is ready before carry on
-    #until [[ -f "/mnt/shared/main_instance_ready.flag" ]];
-    #do sleep 10 && echo "Database is not up to date, waiting...";
-    #done;
-    #echo "Database is up to date.";
-    #rm /mnt/shared/main_instance_ready.flag
-    true
+    until [[ -f "/mnt/shared/main_instance_ready.flag" ]];
+    do sleep 10 && echo "Database is not up to date, waiting...";
+    done;
+    echo "Database is up to date.";
+    sudo rm /mnt/shared/main_instance_ready.flag
 fi
 
 # Install/Build assets
