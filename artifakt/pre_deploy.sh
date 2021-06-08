@@ -18,9 +18,13 @@ php bin/console sylius:install:check-requirements
 
 if [[ $ARTIFAKT_IS_MAIN_INSTANCE -eq 1 ]]; then
     if [[ "$IS_INSTALLED" == "false" ]]; then
+        # Mount 'public/media' directory, in order to properly get images from sample data installation
+        sudo mkdir -p /mnt/shared/public/media/image
+        sudo chown -R apache:opsworks /mnt/shared/public/media
+        sudo ln -sf /mnt/shared/public/media public/media
+
         # Install fresh DB and project (@see https://docs.sylius.com/en/1.9/cookbook/configuration/installation-commands.html)
         printf "y\ny\n" | php bin/console sylius:install:database -e $ARTIFAKT_ENVIRONMENT_CRITICALITY --ansi
-        printf "y\n" | php bin/console sylius:install:sample-data -e $ARTIFAKT_ENVIRONMENT_CRITICALITY --ansi
         php bin/console sylius:install:setup -e $ARTIFAKT_ENVIRONMENT_CRITICALITY --ansi -n
     else
         # Load fixtures
