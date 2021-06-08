@@ -20,6 +20,7 @@ if [[ $ARTIFAKT_IS_MAIN_INSTANCE -eq 1 ]]; then
     if [[ "$IS_INSTALLED" == "false" ]]; then
         # Install fresh DB and project (@see https://docs.sylius.com/en/1.9/cookbook/configuration/installation-commands.html)
         printf "y\ny\n" | php bin/console sylius:install:database -e $ARTIFAKT_ENVIRONMENT_CRITICALITY --ansi
+        printf "y\n" | php bin/console sylius:install:sample-data -e $ARTIFAKT_ENVIRONMENT_CRITICALITY --ansi
         php bin/console sylius:install:setup -e $ARTIFAKT_ENVIRONMENT_CRITICALITY --ansi -n
     else
         # Load fixtures
