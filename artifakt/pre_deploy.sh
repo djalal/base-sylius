@@ -36,6 +36,7 @@ else
     #done;
     #echo "Database is up to date.";
     #rm /mnt/shared/main_instance_ready.flag
+    true
 fi
 
 # Install/Build assets
