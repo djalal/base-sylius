@@ -38,7 +38,6 @@ else
     do sleep 10 && echo "Waiting main instance...";
     done;
     echo "Main instance ready";
-    sudo rm /mnt/shared/main_instance_ready.flag
 fi
 
 # Install/Build assets
