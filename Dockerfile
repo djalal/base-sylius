@@ -1,4 +1,4 @@
-FROM registry.artifakt.io/sylius:1.10-apache
+FROM registry.artifakt.io/sylius:1.11-apache
 
 ENV APP_DEBUG=0
 ENV APP_ENV=prod
