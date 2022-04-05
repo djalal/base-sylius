@@ -48,11 +48,12 @@ RUN yarn install --cache-folder=/tmp --frozen-lockfile && yarn build && yarn cac
 # hadolint ignore=DL3002
 USER root
 
-COPY /.artifakt/bin/wait-for /.artifakt/bin/docker-entrypoint.sh /usr/local/bin/
+COPY /.artifakt/etc/bin/wait-for /.artifakt/etc/bin/docker-entrypoint.sh /usr/local/bin/
 
-COPY /.artifakt/etc/php/php.ini /usr/local/etc/php/conf.d/zzzz-sylius.ini
+COPY  --chmod=+x /.artifakt/etc/php/php.ini /usr/local/etc/php/conf.d/zzzz-sylius.ini
 COPY /.artifakt/etc/apache/000-default.conf /etc/apache2/sites-available/
 RUN a2enmod rewrite && a2ensite 000-default
+RUN chmod +x /.artifakt/etc/bin/wait-for 
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["apache2-foreground"]
