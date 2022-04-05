@@ -52,6 +52,8 @@ COPY /.artifakt/etc/php/php.ini /usr/local/etc/php/conf.d/zzzz-sylius.ini
 COPY /.artifakt/etc/apache/000-default.conf /etc/apache2/sites-available/
 COPY --chmod=+x /.artifakt/etc/bin/wait-for /.artifakt/etc/bin/docker-entrypoint.sh /usr/local/bin/
 
+RUN ls -la /usr/local/bin/
+
 RUN a2enmod rewrite && a2ensite 000-default
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
