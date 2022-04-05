@@ -64,6 +64,7 @@ CMD ["apache2-foreground"]
 
 ENV APP_DEBUG=0
 ENV APP_ENV=prod
+ENV MESSENGER_TRANSPORT_DSN="doctrine://default"
 
 ARG CODE_ROOT=.
 
