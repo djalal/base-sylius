@@ -53,7 +53,6 @@ COPY /.artifakt/etc/bin/wait-for /.artifakt/etc/bin/docker-entrypoint.sh /usr/lo
 COPY  --chmod=+x /.artifakt/etc/php/php.ini /usr/local/etc/php/conf.d/zzzz-sylius.ini
 COPY /.artifakt/etc/apache/000-default.conf /etc/apache2/sites-available/
 RUN a2enmod rewrite && a2ensite 000-default
-RUN chmod +x /.artifakt/etc/bin/wait-for 
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["apache2-foreground"]
